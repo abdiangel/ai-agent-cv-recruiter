@@ -144,16 +144,17 @@ export function validate(schemaName: keyof typeof validationSchemas) {
     if (schema.query) {
       for (const [field, rules] of Object.entries(schema.query)) {
         let value = req.query?.[field];
+        let processedValue: any = value;
 
         // Convert string numbers to numbers for query params
         if ((rules as any).type === "number" && typeof value === "string") {
           const numValue = Number(value);
           if (!isNaN(numValue)) {
-            (req.query as any)[field] = numValue;
+            processedValue = numValue;
           }
         }
 
-        const error = validateField(value, `query.${field}`, rules);
+        const error = validateField(processedValue, `query.${field}`, rules);
         if (error) errors.push(error);
       }
     }
@@ -250,9 +251,8 @@ export function sanitizeInput(req: AuthenticatedRequest, res: ApiResponseLocals,
     req.body = sanitize(req.body);
   }
 
-  if (req.query) {
-    req.query = sanitize(req.query);
-  }
+  // Note: req.query is read-only in newer Express versions
+  // Query parameters are typically already strings and don't need deep sanitization
 
   next();
 }

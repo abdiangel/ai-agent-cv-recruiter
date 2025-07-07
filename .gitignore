@@ -5,9 +5,11 @@
 
 # Dependencies
 /node_modules
+/frontend/node_modules
 
 # TypeScript build output
 /dist
+/frontend/dist
 
 # OS generated files
 .DS_Store
