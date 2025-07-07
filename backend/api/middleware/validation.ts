@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction } from "express";
 import { AuthenticatedRequest, ApiResponseLocals, ValidationError, ApiError } from "../types";
 
 /**
@@ -149,7 +149,6 @@ export function validate(schemaName: keyof typeof validationSchemas) {
         if ((rules as any).type === "number" && typeof value === "string") {
           const numValue = Number(value);
           if (!isNaN(numValue)) {
-            (req.query as any)[key] = numValue;
             (req.query as any)[field] = numValue;
           }
         }

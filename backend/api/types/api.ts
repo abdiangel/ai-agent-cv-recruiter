@@ -278,17 +278,7 @@ export interface AuthenticatedRequest extends Request {
     permissions: string[];
   };
   requestId: string;
-  file?: {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-    size: number;
-    destination: string;
-    filename: string;
-    path: string;
-    buffer: Buffer;
-  }; // For file uploads
+  // Remove the custom file property - multer will add this automatically
 }
 
 export interface ApiResponseLocals extends Response {

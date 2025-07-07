@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, RequestHandler } from "express";
 import { SystemController } from "../controllers";
 
 const router = Router();
@@ -9,7 +9,7 @@ const systemController = new SystemController();
  * @desc    Health check endpoint
  * @access  Public
  */
-router.get("/health", systemController.healthCheck.bind(systemController));
+router.get("/health", systemController.healthCheck.bind(systemController) as RequestHandler);
 
 /**
  * @route   GET /api/system/stats
@@ -19,7 +19,7 @@ router.get("/health", systemController.healthCheck.bind(systemController));
 router.get(
   "/stats",
   // TODO: Add authentication middleware for admin endpoints
-  systemController.getStats.bind(systemController),
+  systemController.getStats.bind(systemController) as RequestHandler,
 );
 
 /**
@@ -30,7 +30,7 @@ router.get(
 router.get(
   "/info",
   // TODO: Add authentication middleware for admin endpoints
-  systemController.getSystemInfo.bind(systemController),
+  systemController.getSystemInfo.bind(systemController) as RequestHandler,
 );
 
 export default router;

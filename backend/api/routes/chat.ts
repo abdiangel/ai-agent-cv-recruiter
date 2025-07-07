@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, RequestHandler } from "express";
 import multer from "multer";
 import { ChatController } from "../controllers";
 import { validate, validateFileUpload, sanitizeInput } from "../middleware/validation";
@@ -29,13 +29,22 @@ const upload = multer({
   },
 });
 
+// Cast middleware functions to RequestHandler
+const sanitizeInputHandler = sanitizeInput as RequestHandler;
+const validateFileUploadHandler = validateFileUpload as RequestHandler;
+
 /**
  * @route   POST /api/chat/message
  * @desc    Process a chat message from the user
  * @access  Public
  * @body    { message: string, sessionId: string, userId?: string, metadata?: object }
  */
-router.post("/message", sanitizeInput, validate("chatMessage"), chatController.processMessage.bind(chatController));
+router.post(
+  "/message",
+  sanitizeInputHandler,
+  validate("chatMessage") as RequestHandler,
+  chatController.processMessage.bind(chatController) as RequestHandler,
+);
 
 /**
  * @route   POST /api/chat/upload-cv
@@ -44,7 +53,14 @@ router.post("/message", sanitizeInput, validate("chatMessage"), chatController.p
  * @body    { sessionId: string, userId?: string }
  * @file    CV file (PDF, DOC, DOCX, TXT)
  */
-router.post("/upload-cv", upload.single("cv"), sanitizeInput, validate("uploadCV"), validateFileUpload, chatController.uploadCV.bind(chatController));
+router.post(
+  "/upload-cv",
+  upload.single("cv"),
+  sanitizeInputHandler,
+  validate("uploadCV") as RequestHandler,
+  validateFileUploadHandler,
+  chatController.uploadCV.bind(chatController) as RequestHandler,
+);
 
 /**
  * @route   GET /api/chat/session/:sessionId
@@ -52,7 +68,7 @@ router.post("/upload-cv", upload.single("cv"), sanitizeInput, validate("uploadCV
  * @access  Public
  * @params  sessionId - Session identifier
  */
-router.get("/session/:sessionId", validate("sessionId"), chatController.getSession.bind(chatController));
+router.get("/session/:sessionId", validate("sessionId") as RequestHandler, chatController.getSession.bind(chatController) as RequestHandler);
 
 /**
  * @route   POST /api/chat/end-session
@@ -60,7 +76,12 @@ router.get("/session/:sessionId", validate("sessionId"), chatController.getSessi
  * @access  Public
  * @body    { sessionId: string, reason?: string, feedback?: object }
  */
-router.post("/end-session", sanitizeInput, validate("endSession"), chatController.endSession.bind(chatController));
+router.post(
+  "/end-session",
+  sanitizeInputHandler,
+  validate("endSession") as RequestHandler,
+  chatController.endSession.bind(chatController) as RequestHandler,
+);
 
 /**
  * @route   GET /api/chat/sessions
@@ -70,7 +91,7 @@ router.post("/end-session", sanitizeInput, validate("endSession"), chatControlle
 router.get(
   "/sessions",
   // TODO: Add authentication middleware for admin endpoints
-  chatController.getActiveSessions.bind(chatController),
+  chatController.getActiveSessions.bind(chatController) as RequestHandler,
 );
 
 /**
@@ -82,7 +103,7 @@ router.get(
 router.delete(
   "/sessions/cleanup",
   // TODO: Add authentication middleware for admin endpoints
-  chatController.cleanupSessions.bind(chatController),
+  chatController.cleanupSessions.bind(chatController) as RequestHandler,
 );
 
 export default router;

@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, RequestHandler } from "express";
 import { HRController } from "../controllers";
 import { validate, sanitizeInput } from "../middleware/validation";
 
@@ -11,7 +11,7 @@ const hrController = new HRController();
  * @access  HR
  * @query   page?, limit?, status?, sortBy?, sortOrder?, search?, skills?, minExperience?, maxExperience?
  */
-router.get("/candidates", validate("candidateList"), hrController.getCandidates.bind(hrController));
+router.get("/candidates", validate("candidateList") as RequestHandler, hrController.getCandidates.bind(hrController) as RequestHandler);
 
 /**
  * @route   GET /api/hr/reports/:candidateId
@@ -19,7 +19,7 @@ router.get("/candidates", validate("candidateList"), hrController.getCandidates.
  * @access  HR
  * @params  candidateId - Candidate identifier
  */
-router.get("/reports/:candidateId", validate("candidateId"), hrController.getCandidateReport.bind(hrController));
+router.get("/reports/:candidateId", validate("candidateId") as RequestHandler, hrController.getCandidateReport.bind(hrController) as RequestHandler);
 
 /**
  * @route   PUT /api/hr/candidates/:candidateId/status
@@ -30,10 +30,10 @@ router.get("/reports/:candidateId", validate("candidateId"), hrController.getCan
  */
 router.put(
   "/candidates/:candidateId/status",
-  sanitizeInput,
-  validate("candidateId"),
+  sanitizeInput as RequestHandler,
+  validate("candidateId") as RequestHandler,
   // TODO: Add validation for status update body
-  hrController.updateCandidateStatus,
+  hrController.updateCandidateStatus as RequestHandler,
 );
 
 /**
@@ -41,13 +41,13 @@ router.put(
  * @desc    Get HR analytics and statistics
  * @access  HR
  */
-router.get("/analytics", hrController.getAnalytics.bind(hrController));
+router.get("/analytics", hrController.getAnalytics.bind(hrController) as RequestHandler);
 
 /**
  * @route   GET /api/hr/export/candidates
  * @desc    Export candidates data in CSV format
  * @access  HR
  */
-router.get("/export/candidates", hrController.exportCandidates.bind(hrController));
+router.get("/export/candidates", hrController.exportCandidates.bind(hrController) as RequestHandler);
 
 export default router;

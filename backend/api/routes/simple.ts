@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, RequestHandler } from "express";
 import multer from "multer";
 import { SimpleChatController } from "../controllers/simple/ChatController";
 
@@ -36,16 +36,16 @@ router.use((req, res, next) => {
 /**
  * Chat Routes
  */
-router.post("/chat/message", chatController.processMessage);
-router.post("/chat/upload-cv", upload.single("cv"), chatController.uploadCV);
-router.get("/chat/session/:sessionId", chatController.getSession);
-router.post("/chat/end-session", chatController.endSession);
+router.post("/chat/message", chatController.processMessage as RequestHandler);
+router.post("/chat/upload-cv", upload.single("cv"), chatController.uploadCV as RequestHandler);
+router.get("/chat/session/:sessionId", chatController.getSession as RequestHandler);
+router.post("/chat/end-session", chatController.endSession as RequestHandler);
 
 /**
  * Admin Routes
  */
-router.get("/admin/sessions", chatController.getActiveSessions);
-router.delete("/admin/sessions/cleanup", chatController.cleanupSessions);
+router.get("/admin/sessions", chatController.getActiveSessions as RequestHandler);
+router.delete("/admin/sessions/cleanup", chatController.cleanupSessions as RequestHandler);
 
 /**
  * Health Check

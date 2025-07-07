@@ -21,9 +21,9 @@ export { JailbreakDetector } from "./security/JailbreakDetector";
 export { RecruitingAgent } from "./core/RecruitingAgent";
 
 // Re-export key types
-export type { CandidateIntention, IntentionDetectionResult, IntentionDetectorConfig } from "./intention/IntentionTypes";
+export { CandidateIntention, type IntentionDetectionResult, type IntentionDetectorConfig } from "./intention/IntentionTypes";
 
-export type { AgentState, AgentAction, StateTransitionResult, StateMachineConfig } from "./state/AgentStates";
+export { AgentState, AgentAction, type StateTransitionResult, type StateMachineConfig } from "./state/AgentStates";
 
 export type { CandidateProfile, CVParsingResult, CVAnalysis, CVParserConfig } from "./cv/CVTypes";
 

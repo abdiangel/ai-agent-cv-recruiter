@@ -23,6 +23,9 @@ export interface UserSession {
     userAgent?: string;
     ipAddress?: string;
     language?: string;
+    endedAt?: string;
+    endReason?: string;
+    feedback?: any;
   };
 }
 

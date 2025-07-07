@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction } from "express";
 import { AuthenticatedRequest, ApiResponseLocals } from "../types";
 import { TooManyRequestsError } from "./errorHandler";
 

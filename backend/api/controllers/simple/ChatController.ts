@@ -84,7 +84,7 @@ export class SimpleChatController {
       const file = req.file;
 
       if (!file) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           error: "No file uploaded",
           timestamp: new Date().toISOString(),
